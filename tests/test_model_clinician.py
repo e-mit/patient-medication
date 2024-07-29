@@ -32,3 +32,31 @@ def test_deserialize_invalid_clinician():
     '''
     with pytest.raises(ValueError):
         ClinicianCreate.model_validate_json(json_string)
+
+
+def test_clinician_db(session):
+    # Create a new Clinician instance
+    new_clinician = ClinicianCreate(
+        first_name="John",
+        last_name="Tester",
+        registration_id="ABC"
+    )
+
+    # Convert to database model (no id)
+    clinician = Clinician.model_validate(new_clinician)
+    assert clinician.id is None
+
+    # Add to database and check created id
+    session.add(clinician)
+    session.commit()
+    session.refresh(clinician)
+    assert clinician.id is not None
+
+    # Query the clinician from the database
+    statement = select(Clinician).where(Clinician.first_name == "John")
+    clinician_from_db = session.exec(statement).first()
+
+    assert clinician_from_db == clinician
+    assert clinician_from_db.first_name == "John"
+    assert clinician_from_db.last_name == "Tester"
+    assert clinician_from_db.registration_id == "ABC"
