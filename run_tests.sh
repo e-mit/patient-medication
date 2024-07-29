@@ -9,7 +9,7 @@ commands=(
     "python -m pycodestyle app"
     "python -m pydocstyle --add-ignore=D107 app"
     "python -m bandit -r . --exclude=/tests/,/venv/"
-    "python -m flake8 --exclude=tests/*,venv/*"
+    "python -m flake8 --exclude=tests/*,venv/*,migrations/versions/*"
     "python -m mypy . --explicit-package-bases --exclude 'tests/' --exclude 'venv/'"
 )
 
@@ -52,21 +52,21 @@ else
 fi
 
 # System test
-# echo "----------------------"
-# echo "Run: system test"
-# ((total_commands++))
-# ./system_test.sh
-# result=$?
-# if [[ $result -gt 100 ]]; then
-#     echo "SKIP"
-#     ((skip_count++))
-# elif [[ $result -eq 0 ]]; then
-#     echo "PASS"
-#     ((success_count++))
-# else
-#     echo "FAIL"
-#     ((failure_count++))
-# fi
+echo "----------------------"
+echo "Run: system test"
+((total_commands++))
+./system_test.sh
+result=$?
+if [[ $result -gt 100 ]]; then
+    echo "SKIP"
+    ((skip_count++))
+elif [[ $result -eq 0 ]]; then
+    echo "PASS"
+    ((success_count++))
+else
+    echo "FAIL"
+    ((failure_count++))
+fi
 echo "----------------------"
 
 # Summary
