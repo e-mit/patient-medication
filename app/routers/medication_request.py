@@ -6,7 +6,8 @@ from .. import settings
 from ..models.medication_request import (
     MedicationRequestInput,
     MedicationRequestOutput,
-    MedicationRequest
+    MedicationRequest,
+    MedicationRequestPatch
 )
 from ..database import DbDependency
 from .. import crud
@@ -40,3 +41,15 @@ async def post_medication_request(
         medication_request_id=result.id)
     response.headers["Location"] = str(location_url)
     return result
+
+
+@router.patch("/{medication_request_id}",
+              response_model=MedicationRequestOutput)
+async def patch_medication_request(
+        patient_id: int,
+        medication_request_id: int,
+        patch_data: MedicationRequestPatch,
+        db: DbDependency):
+    """Modify a subset of fields of a medication request."""
+    return await crud.update_medication_request(
+        db, patch_data, medication_request_id, patient_id)
