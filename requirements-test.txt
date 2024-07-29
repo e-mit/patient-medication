@@ -1,0 +1,11 @@
+pycodestyle
+pydocstyle
+bandit
+pytest-cov
+flake8
+mypy==1.9.0
+pylint
+pyright
+pytest
+aiosqlite
+pytest-asyncio

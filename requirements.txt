@@ -1,0 +1,7 @@
+pydantic==2.8.2
+SQLAlchemy==2.0.31
+sqlmodel==0.0.21
+fastapi==0.111.1
+uvicorn==0.30.3
+alembic==1.13.2
+asyncpg==0.29.0
