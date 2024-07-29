@@ -1,0 +1,7 @@
+venv
+__pycache__
+*.db
+.coverage
+.vscode
+.pytest_cache
+.mypy_cache
