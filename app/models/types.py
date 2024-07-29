@@ -1,7 +1,7 @@
 """Types used in model classes."""
 
 from enum import Enum
-from typing import Annotated
+from typing import Annotated, Protocol
 
 from sqlmodel import Field
 
@@ -44,3 +44,9 @@ class ModelInvalidError(Exception):
     def __init__(self, message: str):
         super().__init__(message)
         self.message = message
+
+
+class HasId(Protocol):  # pylint: disable=R0903
+    """Structural subtyping for models with an id attribute."""
+
+    id: int | None
