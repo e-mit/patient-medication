@@ -16,6 +16,7 @@ from app.models.medication import Medication
 from app.models.clinician import Clinician
 from app.models.patient import Patient
 
+
 def test_dictionary_medication_request():
     valid_data = {
         "reason": "the reason text goes in this field.",
