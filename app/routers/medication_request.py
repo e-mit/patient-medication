@@ -1,14 +1,12 @@
 """API router for medication requests."""
 
-from fastapi import APIRouter, Depends, status, Response, Request
+from fastapi import APIRouter, status, Response, Request
 
 from .. import settings
 from ..models.medication_request import (
     MedicationRequestInput,
     MedicationRequestOutput,
-    MedicationRequestPatch,
-    MedicationRequest,
-    MedicationRequestQueryParams
+    MedicationRequest
 )
 from ..database import DbDependency
 from .. import crud
