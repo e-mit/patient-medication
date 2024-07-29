@@ -27,3 +27,20 @@ class Sex(str, Enum):
 
     MALE = 'male'
     FEMALE = 'female'
+
+
+class MedicationRequestStatus(str, Enum):
+    """The status of a medication request."""
+
+    ACTIVE = 'active'
+    ON_HOLD = 'on-hold'
+    CANCELLED = 'cancelled'
+    COMPLETED = 'completed'
+
+
+class ModelInvalidError(Exception):
+    """Exception raised if a custom validator fails."""
+
+    def __init__(self, message: str):
+        super().__init__(message)
+        self.message = message
