@@ -79,3 +79,39 @@ async def test_get_medication_request():
                 == mock_medication_request.clinician.last_name)
         assert (interpreted_data.medication.code_name
                 == mock_medication_request.medication.code_name)
+
+
+@pytest.mark.asyncio
+async def test_post_medication_request():
+    medication_request_input = MedicationRequestInput(
+        reason="the reason text goes in this field.",
+        prescribed_date=date(2024, 1, 5),
+        start_date=date(2024, 1, 6),
+        end_date=date(2024, 4, 5),
+        frequency="3 times/day",
+        status=MedicationRequestStatus.ON_HOLD,
+        clinician_id=555,
+        medication_id=123
+    )
+
+    with patch(
+            'app.crud.create_medication_request',
+            new_callable=AsyncMock) as mock_create_medication_request:
+        mock_create_medication_request.return_value = mock_medication_request
+
+        response = client.post(
+            f"/{settings.PATIENT_URL_PREFIX}"
+            f"/{mock_medication_request.patient_id}"
+            f"/{settings.MEDICATION_REQUEST_URL_PREFIX}",
+            content=medication_request_input.model_dump_json(),
+            headers={"Content-Type": "application/json"})
+
+        assert response.status_code == 201
+
+        mock_create_medication_request.assert_awaited_once_with(
+            mock_db_session, medication_request_input,
+            mock_medication_request.patient_id)
+
+        input_json = mock_medication_request.model_dump_json()
+        assert (MedicationRequest(**json.loads(input_json))
+                == MedicationRequest(**response.json()))
