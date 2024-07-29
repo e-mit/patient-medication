@@ -1,13 +1,14 @@
 """API router for medication requests."""
 
-from fastapi import APIRouter, status, Response, Request
+from fastapi import APIRouter, Depends, status, Response, Request
 
 from .. import settings
 from ..models.medication_request import (
     MedicationRequestInput,
     MedicationRequestOutput,
+    MedicationRequestPatch,
     MedicationRequest,
-    MedicationRequestPatch
+    MedicationRequestQueryParams
 )
 from ..database import DbDependency
 from .. import crud
@@ -53,3 +54,13 @@ async def patch_medication_request(
     """Modify a subset of fields of a medication request."""
     return await crud.update_medication_request(
         db, patch_data, medication_request_id, patient_id)
+
+
+@router_plural.get("/", response_model=list[MedicationRequestOutput])
+async def get_medication_requests(
+        db: DbDependency,
+        patient_id: int,
+        query_params: MedicationRequestQueryParams = Depends()):
+    """Get a filtered medication request collection."""
+    return await crud.read_filtered_medication_requests(
+        db, patient_id, query_params)
