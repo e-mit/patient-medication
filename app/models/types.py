@@ -20,3 +20,10 @@ class MedicationForm(str, Enum):
     TABLET = 'tablet'
     CAPSULE = 'capsule'
     SYRUP = 'syrup'
+
+
+class Sex(str, Enum):
+    """The sex of a person."""
+
+    MALE = 'male'
+    FEMALE = 'female'
